@@ -1,0 +1,53 @@
+import Task from "../models/Task.js";
+
+export const getAllTasks = async (request, response) => {
+    try {
+        const tasks = await Task.find().sort({ createdAt: -1 });
+        response.status(200).json(tasks);
+    } catch (error) {
+        console.error("Loi khi goi getAllTasks:", error);
+        response.status(500).json({ message: "Loi he thong" });
+    }
+}
+export const createTask = async (request, response) => {
+    try {
+        const { title } = request.body;
+        const task = new Task({ title });
+        const newTask = await task.save();
+        response.status(201).json(newTask);
+    } catch (error) {
+        console.error("Loi khi goi createTask:", error);
+        response.status(500).json({ message: "Loi he thong" });
+    }
+}
+export const updateTask = async (request, response) => {
+    try {
+        const { title, status, completedAt } = request.body;
+        const updateTask = await Task.findByIdAndUpdate(
+            request.params.id,
+            {
+                title, status, completedAt
+            },
+            { new: true }
+        );
+        if (!updateTask) {
+            return response.status(404).json({ message: "Nhiem vu ko ton ta" });
+        }
+        response.status(200).json(updateTask);
+    } catch (error) {
+        console.error("Loi khi goi updateTask:", error);
+        response.status(500).json({ message: "Loi he thong" });
+    }
+}
+export const deleteTask = async (request, response) => {
+    try {
+        const deleteTask = await Task.findByIdAndDelete(request.params.id);
+        if (!deleteTask) {
+            return response.status(404).json({ message: "Nhiem vu ko ton tai" });
+        }
+        response.status(200).json(deleteTask);
+    } catch (error) {
+        console.error("Loi khi goi deleteTask:", error);
+        response.status(500).json({ message: "Loi he thong" });
+    }
+}
