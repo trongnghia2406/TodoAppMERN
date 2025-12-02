@@ -19,7 +19,7 @@ const Footer = ({ completedTasksCount = 0, activeTasksCount = 0 }) => {
                         {
                             completedTasksCount === 0 && activeTasksCount > 0 && (
                                 <>
-                                    Hãy bắt đầu làm ${activeTasksCount} công việc đang làm thôi!
+                                    Hãy bắt đầu làm {activeTasksCount} công việc đang làm thôi!
                                 </>
                             )
                         }
